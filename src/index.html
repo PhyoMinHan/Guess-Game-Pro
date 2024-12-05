@@ -63,10 +63,12 @@
             placeholder="1-50">
         <div>
             <button onclick="play()"
-                class="bg-blue-500 outline:none hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mr-2" id="guess-btn">
+                class="bg-blue-500 outline:none hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mr-2"
+                id="guess-btn">
                 Guess
             </button>
-            <button onclick="restart()" class="bg-red-500 outline:none  hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">
+            <button onclick="restart()"
+                class="bg-red-500 outline:none  hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">
                 Restart
             </button>
         </div>
@@ -92,7 +94,7 @@
         const guessInput = document.getElementById("guess_num");
         const guessButton = document.getElementById("guess-btn");
 
-        let chance = 7;
+        let chance = 5;
         let guessedNumbers = [];
         let answer = generateRandomNumber();
 
@@ -110,14 +112,13 @@
             msg2.textContent = `Number of chances left: ${chance}`;
             msg3.textContent = "Guessed numbers: " + guessedNumbers.join(", ");
             msg1.textContent = message;
-            msg1.classList.remove("text-green-600", "text-red-500");
         }
 
         function play() {
             const guess = Number(guessInput.value);
 
             if (guess < 1 || guess > 50 || isNaN(guess)) {
-                showModal("Please enter a number between 1 and 50.");
+                showModal("<span class=' text-yellow-500'>Please enter a number between 1 and 50.</span>");
                 guessInput.value = "";
                 return;
             }
@@ -126,28 +127,21 @@
             msg3.textContent = "Guessed numbers: " + guessedNumbers.join(", ");
 
             if (guess === answer) {
-                msg1.innerHTML = "<i>Congratulations! You guessed the correct number!</i>";
-                msg1.classList.remove("text-red-500");
-                msg1.classList.add("text-green-600"); // Green color for success
-                resetGame();
                 showModal("You won! Starting a new game...");
+                resetGame();
             } else {
-
                 if (guess > answer) {
                     msg1.textContent = `Your guess ${guess} is too high!`;
-                    msg1.classList.remove("text-green-600");  // Remove green if previously added
-                    msg1.classList.add("text-red-500"); // Red color for too high
+                    msg1.style.color = "red";
                 } else {
                     msg1.textContent = `Your guess ${guess} is too low!`;
-                    msg1.classList.remove("text-green-600");  // Remove green if previously added
-                    msg1.classList.add("text-red-500"); // Red color for too low
+                    msg1.style.color = "red";
                 }
-
                 chance--;
                 msg2.textContent = `Number of chances left: ${chance}`;
 
                 if (chance <= 0) {
-                    showModal("Game over! Starting a new game...");
+                    showModal("<span class='text-red-500'>Game over! Starting a new game...</span>");
                     resetGame();
                 }
             }
@@ -157,20 +151,20 @@
         function restart() {
             resetGame("Game restarted successfully!");
             msg1.innerHTML = "Game restarted successfully!<br>Starting a new game.....";
-            msg1.classList.remove("text-red-500");  // Make sure red color is removed
-            msg1.classList.add("text-green-600"); // Green color for restart success
+            msg1.style.color = "green";
             guessInput.disabled = true;
-
             setTimeout(() => {
                 guessInput.disabled = false;
                 msg1.textContent = "";
             }, 2000);
-        }
+            const modal = document.getElementById('alertModal');
+            modal.style.display = 'none';
+        };
 
         function showModal(message) {
             const modal = document.getElementById('alertModal');
             const modalMessage = document.getElementById('modalMessage');
-            modalMessage.textContent = message;
+            modalMessage.innerHTML = message;
             modal.style.display = 'flex';
             guessInput.disabled = true;
         }
@@ -180,7 +174,6 @@
             modal.style.display = 'none';
             guessInput.disabled = false;
         });
-
         document.addEventListener('keyup', (event) => {
             if (event.key === 'Escape') {
                 const modal = document.getElementById('alertModal');
@@ -188,7 +181,12 @@
                 guessInput.disabled = false;
             }
         });
-
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'F5') {
+                event.preventDefault();
+                restart();
+            }
+        });
         guessInput.addEventListener("keydown", function (event) {
             if (event.key === "Enter") {
                 play();
