@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon"
+        href="../src/img/png-transparent-iphone-emoji-samsung-galaxy-guess-the-questions-crying-emoji-emoticon-logo-electronics-smiley-apple-color-emoji.png">
+    <title>Guess Game</title>
+    <link rel="stylesheet" href="../output.css">
+    <style>
+        #alertModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
+            width: 80%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .modal-footer button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .modal-footer button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-gradient-to-r from-blue-200 to-cyan-500 flex items-center justify-center text-white">
+    <main class="bg-white bg-opacity-10 backdrop-blur-lg rounded-xl p-8 shadow-lg w-full max-w-lg text-center">
+        <h2 class="text-2xl text-slate-700 font-semibold mb-4">Guess the number between 1 - 50. Can you guess it?</h2>
+        <input type="number" id="guess_num"
+            class="w-24 h-12 text-center text-black rounded-lg border border-gray-300 focus:outline-none focus:ring-cyan-500 mb-4"
+            placeholder="1-50">
+        <div>
+            <button onclick="play()"
+                class="bg-blue-500 outline:none hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mr-2" id="guess-btn">
+                Guess
+            </button>
+            <button onclick="restart()" class="bg-red-500 outline:none  hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">
+                Restart
+            </button>
+        </div>
+        <p class="msg1 mt-4 text-lg"></p>
+        <p class="msg2 text-lg"></p>
+        <p class="msg3 text-lg"></p>
+    </main>
+
+    <!-- Custom Modal -->
+    <div id="alertModal" class="flex items-center justify-center">
+        <div class="modal-content">
+            <div class="modal-header" id="modalMessage"></div>
+            <div class="modal-footer">
+                <button id="closeModalBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const msg1 = document.querySelector(".msg1");
+        const msg2 = document.querySelector(".msg2");
+        const msg3 = document.querySelector(".msg3");
+        const guessInput = document.getElementById("guess_num");
+        const guessButton = document.getElementById("guess-btn");
+
+        let chance = 7;
+        let guessedNumbers = [];
+        let answer = generateRandomNumber();
+
+        msg2.textContent = `Number of chances left: ${chance}`;
+
+        function generateRandomNumber() {
+            return Math.floor(Math.random() * 50) + 1;
+        };
+
+        function resetGame(message) {
+            answer = generateRandomNumber();
+            chance = 7;
+            guessedNumbers = [];
+            guessInput.value = "";
+            msg2.textContent = `Number of chances left: ${chance}`;
+            msg3.textContent = "Guessed numbers: " + guessedNumbers.join(", ");
+            msg1.textContent = message;
+            msg1.classList.remove("text-green-600", "text-red-500");
+        }
+
+        function play() {
+            const guess = Number(guessInput.value);
+
+            if (guess < 1 || guess > 50 || isNaN(guess)) {
+                showModal("Please enter a number between 1 and 50.");
+                guessInput.value = "";
+                return;
+            }
+
+            guessedNumbers.push(guess);
+            msg3.textContent = "Guessed numbers: " + guessedNumbers.join(", ");
+
+            if (guess === answer) {
+                msg1.innerHTML = "<i>Congratulations! You guessed the correct number!</i>";
+                msg1.classList.remove("text-red-500");
+                msg1.classList.add("text-green-600"); // Green color for success
+                resetGame();
+                showModal("You won! Starting a new game...");
+            } else {
+
+                if (guess > answer) {
+                    msg1.textContent = `Your guess ${guess} is too high!`;
+                    msg1.classList.remove("text-green-600");  // Remove green if previously added
+                    msg1.classList.add("text-red-500"); // Red color for too high
+                } else {
+                    msg1.textContent = `Your guess ${guess} is too low!`;
+                    msg1.classList.remove("text-green-600");  // Remove green if previously added
+                    msg1.classList.add("text-red-500"); // Red color for too low
+                }
+
+                chance--;
+                msg2.textContent = `Number of chances left: ${chance}`;
+
+                if (chance <= 0) {
+                    showModal("Game over! Starting a new game...");
+                    resetGame();
+                }
+            }
+            guessInput.value = "";
+        }
+
+        function restart() {
+            resetGame("Game restarted successfully!");
+            msg1.innerHTML = "Game restarted successfully!<br>Starting a new game.....";
+            msg1.classList.remove("text-red-500");  // Make sure red color is removed
+            msg1.classList.add("text-green-600"); // Green color for restart success
+            guessInput.disabled = true;
+
+            setTimeout(() => {
+                guessInput.disabled = false;
+                msg1.textContent = "";
+            }, 2000);
+        }
+
+        function showModal(message) {
+            const modal = document.getElementById('alertModal');
+            const modalMessage = document.getElementById('modalMessage');
+            modalMessage.textContent = message;
+            modal.style.display = 'flex';
+            guessInput.disabled = true;
+        }
+
+        document.getElementById('closeModalBtn').addEventListener('click', () => {
+            const modal = document.getElementById('alertModal');
+            modal.style.display = 'none';
+            guessInput.disabled = false;
+        });
+
+        document.addEventListener('keyup', (event) => {
+            if (event.key === 'Escape') {
+                const modal = document.getElementById('alertModal');
+                modal.style.display = 'none';
+                guessInput.disabled = false;
+            }
+        });
+
+        guessInput.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                play();
+            }
+        });
+    </script>
+</body>
+
+</html>
