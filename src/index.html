@@ -12,45 +12,6 @@
     <style>
         #alertModal {
             display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            max-width: 400px;
-            width: 80%;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .modal-header {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        .modal-footer button {
-            background-color: #007BFF;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .modal-footer button:hover {
-            background-color: #0056b3;
         }
     </style>
 </head>
@@ -78,14 +39,20 @@
     </main>
 
     <!-- Custom Modal -->
-    <div id="alertModal" class="flex items-center justify-center">
-        <div class="modal-content">
-            <div class="modal-header" id="modalMessage"></div>
-            <div class="modal-footer">
-                <button id="closeModalBtn">Close</button>
+
+    <div id="alertModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div
+            class="bg-white rounded-lg shadow-lg max-w-sm w-full p-6 text-center transition-transform transform scale-100">
+            <div id="modalMessage" class="text-xl font-bold text-gray-800 mb-4"></div>
+            <div class="mt-4">
+                <button id="closeModalBtn"
+                    class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    Close
+                </button>
             </div>
         </div>
     </div>
+
 
     <script>
         const msg1 = document.querySelector(".msg1");
@@ -118,7 +85,7 @@
             const guess = Number(guessInput.value);
 
             if (guess < 1 || guess > 50 || isNaN(guess)) {
-                showModal("<span class=' text-yellow-500'>Please enter a number between 1 and 50.</span>");
+                showModal("<span class=' text-yellow-500'>Please Fill a number between 1 and 50.</span>");
                 guessInput.value = "";
                 return;
             }
@@ -127,7 +94,7 @@
             msg3.textContent = "Guessed numbers: " + guessedNumbers.join(", ");
 
             if (guess === answer) {
-                showModal("You won! Starting a new game...");
+                showModal(`<span class="text-green-600">You won!<br>Starting a new game...</span>`);
                 resetGame();
             } else {
                 if (guess > answer) {
@@ -141,7 +108,7 @@
                 msg2.textContent = `Number of chances left: ${chance}`;
 
                 if (chance <= 0) {
-                    showModal("<span class='text-red-500'>Game over! Starting a new game...</span>");
+                    showModal("<span class='text-red-500'>Game over!<br>Restarting a new game...</span>");
                     resetGame();
                 }
             }
