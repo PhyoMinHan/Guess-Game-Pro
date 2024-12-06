@@ -23,12 +23,12 @@
             placeholder="1-50">
         <div>
             <button onclick="play()"
-                class="bg-blue-500 outline:none hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mr-2"
+                class="bg-blue-500 focus:outline-none focus:ring-2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mr-2"
                 id="guess-btn">
                 Guess
             </button>
             <button onclick="restart()"
-                class="bg-red-500 outline:none  hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">
+                class="bg-red-500 focus:outline-none focus:ring-2 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">
                 Restart
             </button>
         </div>
@@ -113,7 +113,6 @@
             }
             guessInput.value = "";
         }
-
         function restart() {
             resetGame("Game restarted successfully!");
             msg1.innerHTML = "Game restarted successfully!<br>Starting a new game.....";
