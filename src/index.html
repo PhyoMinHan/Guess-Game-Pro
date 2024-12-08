@@ -23,12 +23,10 @@
             placeholder="1-50">
         <div>
             <button onclick="play()"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mr-2"
-                id="guess-btn">
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mr-2" id="guess-btn">
                 Guess
             </button>
-            <button onclick="restart()"
-                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">
+            <button onclick="restart()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">
                 Restart
             </button>
         </div>
@@ -36,8 +34,6 @@
         <p class="msg2 text-lg"></p>
         <p class="msg3 text-lg"></p>
     </main>
-
-    <!-- Custom Modal -->
 
     <div id="alertModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div
@@ -51,7 +47,6 @@
             </div>
         </div>
     </div>
-
 
     <script>
         const msg1 = document.querySelector(".msg1");
@@ -117,9 +112,17 @@
             resetGame("Game restarted successfully!");
             msg1.innerHTML = "Game restarted successfully!<br>Starting a new game.....";
             msg1.style.color = "green";
+
             guessInput.disabled = true;
+            const guessButton = document.getElementById('guess-btn');
+            const restartButton = document.querySelector('button[onclick="restart()"]');
+            guessButton.disabled = true;
+            restartButton.disabled = true;
+            
             setTimeout(() => {
                 guessInput.disabled = false;
+                guessButton.disabled = false;
+                restartButton.disabled = false;
                 msg1.textContent = "";
             }, 2500);
             const modal = document.getElementById('alertModal');
@@ -152,6 +155,7 @@
                 restart();
             }
         });
+
         guessInput.addEventListener("keydown", function (event) {
             if (event.key === "Enter") {
                 play();
