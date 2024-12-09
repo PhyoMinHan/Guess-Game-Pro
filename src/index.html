@@ -22,8 +22,8 @@
             class="w-24 h-12 text-center text-black rounded-lg border border-gray-300 focus:outline-none focus:ring-cyan-500 mb-4"
             placeholder="1-50">
         <div>
-            <button onclick="play()" id="guess-btn"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mr-2">
+            <button onclick="play()"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mr-2" id="guess-btn">
                 Guess
             </button>
             <button onclick="restart()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">
@@ -59,7 +59,7 @@
         let guessedNumbers = [];
         let answer = generateRandomNumber();
 
-        msg2.textContent = `Number of chances left: ${chance}`;
+        msg2.innerHTML = `Number of chances left: ${chance}`;
 
         function generateRandomNumber() {
             return Math.floor(Math.random() * 50) + 1;
@@ -74,16 +74,15 @@
             msg3.textContent = "Guessed numbers: " + guessedNumbers.join(", ");
             msg1.textContent = message;
         }
-
         function play() {
             const guess = Number(guessInput.value);
 
             if (guess < 1 || guess > 50 || isNaN(guess)) {
-                showModal("<span class=' text-yellow-500'>Please Fill a number between 1 and 50.</span>");
+                showModal("<span class='text-yellow-500'>Please Fill a number between 1 and 50.</span>");
                 guessInput.value = "";
                 return;
             }
-
+            
             guessedNumbers.push(guess);
             msg3.textContent = "Guessed numbers: " + guessedNumbers.join(", ");
 
@@ -112,13 +111,12 @@
             resetGame("Game restarted successfully!");
             msg1.innerHTML = "Game restarted successfully!<br>Starting a new game.....";
             msg1.style.color = "green";
-
             guessInput.disabled = true;
             const guessButton = document.getElementById('guess-btn');
             const restartButton = document.querySelector('button[onclick="restart()"]');
             guessButton.disabled = true;
             restartButton.disabled = true;
-            
+
             setTimeout(() => {
                 guessInput.disabled = false;
                 guessButton.disabled = false;
