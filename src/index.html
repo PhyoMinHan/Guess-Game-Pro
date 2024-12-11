@@ -75,8 +75,7 @@
         }
         function play() {
             const guess = Number(guessInput.value);
-            // if (guessInput.disabled) return;
-
+            if (guessInput.disabled) return;
             if (guess === null || guess < 1 || guess > 50 || isNaN(guess)) {
                 showModal("<span class='text-yellow-500'>Please Fill a number between 1 and 50.</span>");
                 guessInput.value = "";
@@ -162,5 +161,3 @@
         });
     </script>
 </body>
-
-</html>
