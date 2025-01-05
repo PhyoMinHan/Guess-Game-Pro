@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Navbar</title>
+    <link rel="stylesheet" href="../output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            padding-top: 64px;
+        }
+
+        .no-scroll {
+            overflow: hidden;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body class=" bg-gray-100 min-h-screen">
+    <header class="bg-gray-800 text-white fixed top-0 left-0 right-0 z-50">
+        <nav class="flex items-center justify-between px-6 py-4">
+            <h1 class="text-2xl font-bold">NAVBAR</h1>
+            <button id="nav-toggler" class="text-2xl md:hidden">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <!-- Desktop Menu -->
+            <ul class="hidden md:flex space-x-6">
+                <li><a href="#" class="px-4 py-2 rounded hover:bg-gray-700 no-underline">Home</a></li>
+                <li><a href="#" class="px-4 py-2 rounded hover:bg-gray-700 no-underline">About</a></li>
+                <li><a href="#" class="px-4 py-2 rounded hover:bg-gray-700 no-underline">Contact</a></li>
+                <li><a href="#" class="px-4 py-2 rounded hover:bg-gray-700 no-underline">Footer</a></li>
+                <li><a href="#" class="px-4 py-2 rounded hover:bg-gray-700 no-underline">Copyright</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div id="mobile-nav"
+        class="fixed inset-0 bg-white translate-x-full transition-all duration-700 ease-in-out flex flex-col items-center justify-center space-y-8 text-lg text-gray-800 z-50">
+        <button id="nav-close" class="absolute top-5 right-5 text-3xl">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <ul class="w-full text-center space-y-4">
+            <li><a href="#" class="inline-block py-4 rounded no-underline">Home</a></li>
+            <li><a href="#" class="inline-block py-4 rounded no-underline">About</a></li>
+            <li><a href="#" class="inline-block py-4 rounded no-underline">Contact</a></li>
+            <li><a href="#" class="inline-block py-4 rounded no-underline">Footer</a></li>
+            <li><a href="#" class="inline-block py-4 rounded no-underline">Copyright</a></li>
+        </ul>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const navToggler = document.getElementById("nav-toggler");
+            const navClose = document.getElementById("nav-close");
+            const mobileNav = document.getElementById("mobile-nav");
+            const body = document.body;
+
+            navToggler.addEventListener("click", () => {
+                mobileNav.classList.remove("translate-x-full");
+                mobileNav.classList.add("translate-x-0");
+                body.classList.add("no-scroll"); // Disable scrolling
+            });
+
+            navClose.addEventListener("click", () => {
+                mobileNav.classList.remove("translate-x-0");
+                mobileNav.classList.add("translate-x-full");
+                body.classList.remove("no-scroll");
+            });
+        });
+
+    </script>
+</body>
+
+</html>
